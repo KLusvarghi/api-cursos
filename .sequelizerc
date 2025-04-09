@@ -1,0 +1,13 @@
+// Esse arquivo .sequelizers ele basicamente vai exportar um objeto que vai dizer ao sequelizeCLI aonde estão os arquivos de configuracao, models, migrations e seeders (que foi o que ele criou).
+  // tendo que fazer isso por que quando o sequelizeCLI vai rodar ele vai procurar esses arquivos no diretorio que ele criou, que por padrão é o "/" e tivemos que mover para denrto de "src" por que é a nossa estrutura de projeto
+
+const path = require('path'); //o path para ter acesso aos diretorios
+
+// exportnado um modulo
+module.exports = {
+  // "exportando" o camingo para o config e o nome do arquivo
+  'config': path.resolve('./src/config', 'config'),
+  'models-path': path.resolve('./src/models', 'models'),
+  'seeders-path': path.resolve('./src/seeders', 'seeders'),
+  'migrations-path': path.resolve('./src/migrations', 'migrations'),
+}
