@@ -1,8 +1,7 @@
 const express = require('express')
 const pessoas = require('./pessoasRoutes.js')
-// const matriculaa = require('./matriculasRoutes.js')
-// const cursos = require('./cursosRoutes.js')
-// const categorias = require('./categoriasRoutes.js')
+const cursos = require('./cursosRoutes.js')
+const categorias = require('./categoriasRoutes.js')
 
 // O App é uma estancia do express, ele é responsavel por criar o servidor e configurar as rotas, e entre outras coisas.
 module.exports = app => {
@@ -10,9 +9,8 @@ module.exports = app => {
   app.use(
     express.json(),
     pessoas,
-    // matriculaa,
-    // cursos,
-    // categorias
+    cursos,
+    categorias
   )
 }
 
