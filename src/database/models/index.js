@@ -1,5 +1,4 @@
 'use strict';
-// Este arquivo ser'responsavel por indexar todos os models (modelos de pessoas, cursos, etc) que estão dentro da pasta models de forma automatica
 
 const fs = require('fs');
 const path = require('path');

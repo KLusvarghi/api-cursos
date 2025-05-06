@@ -11,19 +11,21 @@ class Controller {
       // como a responsabilidade de buscar os dados é do service, o controller apenas chama o service, tendo que assim apenas referenciar ao "entidadeService" que é o model que foi passado na hora de instanciar o controller
       const registerList = await this.entidadeService.getAllRegisters();
       return res.status(200).json(registerList);
-    } catch (error) {
-      // tratar error
+    } catch (erro) {
+      return res.status(500).json({ message: erro.message });
     }
   }
-
 
   async getById(req, res) {
     const { id } = req.params;
     try {
       const register = await this.entidadeService.getResgisterById(Number(id));
+      if (!register) {
+        return res.status(404).json({ message: `ID ${id} não encontrado` });
+      }
       return res.status(200).json(register);
-    } catch (erro) {
-      // erro
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
     }
   }
 
@@ -31,9 +33,9 @@ class Controller {
     const dataToCreate = req.body;
     try {
       const newCreateRegister = await this.entidadeService.createRegister(dataToCreate);
-      return res.status(200).json(newCreateRegister);
-    } catch (erro) {
-      // erro
+      return res.status(201).json(newCreateRegister);
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
     }
   }
 
@@ -44,23 +46,24 @@ class Controller {
     try {
       const isUpdate = await this.entidadeService.updateRegister(updateData, Number(id));
       if (!isUpdate) {
-        return res.status(400).json({ mensagem: 'registro não foi atualizado' });
+        return res.status(404).json({ message: `ID ${id} não encontrado ou nenhum dado foi alterado` });
       }
-      return res.status(200).json({ mensagem: 'Atualizado com sucesso' });
-    } catch (erro) {
-      // erro
+      return res.status(200).json({ message: `ID ${id} atualizado com sucesso` });
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
     }
   }
 
   async remove(req, res) {
     const { id } = req.params;
     try {
-      await this.entidadeService.removeRegister(Number(id));
-      return res.status(200).json({ mensagem: `id ${id} deletado` });
-
-
+      const rowsDeleted = await this.entidadeService.removeRegister(Number(id));
+      if (!rowsDeleted) {
+        return res.status(404).json({ message: `ID ${id} não encontrado` });
+      }
+      return res.status(200).json({ message: `ID ${id} deletado com sucesso` });
     } catch (error) {
-      return res.status(500).json(error.message);
+      return res.status(500).json({ message: error.message });
     }
   }
 

@@ -7,6 +7,7 @@ class PessoaServices extends Services {
 
   async getMatriculasByStudentId(id) {
     const student = await super.getResgisterById(id)
+    // const student = await this.getResgisterById(id)
     const matriculasList = await student.getAulasMatriculadas()
     return matriculasList
   }
