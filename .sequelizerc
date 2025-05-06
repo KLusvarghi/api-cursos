@@ -6,8 +6,8 @@ const path = require('path'); //o path para ter acesso aos diretorios
 // exportnado um modulo
 module.exports = {
   // "exportando" o camingo para o config e o nome do arquivo
-  'config': path.resolve('./src/config', 'config.json'),
-  'models-path': path.resolve('./src/models'),
-  'seeders-path': path.resolve('./src/seeders'),
-  'migrations-path': path.resolve('./src/migrations'),
+  'config': path.resolve('./src/database/config', 'config.json'),
+  'models-path': path.resolve('./src/database/models'),
+  'seeders-path': path.resolve('./src/database/seeders'),
+  'migrations-path': path.resolve('./src/database/migrations'),
 }

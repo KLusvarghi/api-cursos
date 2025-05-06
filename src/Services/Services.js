@@ -2,12 +2,12 @@
 
 // tudo que não for res e nem res, nós fazemos dentro do serveces
 
-const dataSource = require('../models')
+const dataSource = require('../database/models');
 
 // essa classe genérica é que terá os métodos que serão utilizados em todos os models, como por exemplo o "findAll" que busca todos os dados de uma tabela
 // e o "findByPk" que busca um dado específico da tabela, entre outros métodos que podem ser utilizados em todos os models
 class Services {
-  construsctor(modelName) {
+  constructor(modelName) {
     this.model = modelName
   }
 
@@ -44,6 +44,5 @@ class Services {
   async removeRegister(id) {
     return dataSource[this.model].destroy({ where: { id: id } })
   }
-
 }
 module.exports = Services
