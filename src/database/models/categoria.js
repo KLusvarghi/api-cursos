@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Categoria',
     tableName: 'categorias',
+    paranoid: true, // o sequelize tem um sistema de soft delete, que é quando você não apaga o dado, mas sim marca ele como apagado, e para isso ele cria uma coluna chamada deletedAt, e para isso precisamos ativar o paranoid
   });
   return Categoria;
 };
