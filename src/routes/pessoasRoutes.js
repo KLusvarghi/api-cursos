@@ -10,6 +10,7 @@ const router = Router()
 // um dos motivos do cpodigo abaixo é poque agora estamos lidando com classes, e não mais com metodos estaticos
 // router.get('/pessoas', pessoaController.getAll)
 router.get('/pessoas', (req, res) => pessoaController.getAll(req, res))
+router.get('/pessoas/all', (req, res) => pessoaController.getAllPeopleByScope(req, res))
 router.get('/pessoas/:id', (req, res) => pessoaController.getById(req, res));
 router.post('/pessoas', (req, res) => pessoaController.createNew(req, res));
 router.put('/pessoas/:id', (req, res) => pessoaController.update(req, res));
