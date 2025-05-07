@@ -11,6 +11,10 @@ class PessoaServices extends Services {
     const matriculasList = await student.getAulasMatriculadas()
     return matriculasList
   }
+
+  async getAllPeopleByScope(scope){
+    return await super.getRegistersByScope(scope)
+  }
 }
 
 module.exports = PessoaServices;
