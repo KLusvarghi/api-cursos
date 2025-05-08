@@ -1,5 +1,7 @@
 // Sende ele um controller generico para ser utilizado em todos os models, assim, simplificando a criação de controllers, alguns metodos que podem ser utilizados em todos os models,etc
 
+const converteIds = require('../utils/convertStringHelper.js')
+
 class Controller {
   // Essa classe terá que receber o nome da entidade/model para que ele
   constructor(entidadeService) {
@@ -19,7 +21,22 @@ class Controller {
   async getById(req, res) {
     const { id } = req.params;
     try {
-      const register = await this.entidadeService.getResgisterById(Number(id));
+      const register = await this.entidadeService.getRegistersById(Number(id));
+      if (!register) {
+        return res.status(404).json({ message: `ID ${id} não encontrado` });
+      }
+      return res.status(200).json(register);
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
+
+  async getOne(req, res) {
+    // dessa forma, pegando todos os parametros da url, independente da quantidade
+    const { ...params } = req.params;
+    const where = converteIds(params);
+    try {
+      const register = await this.entidadeService.getRegister(where);
       if (!register) {
         return res.status(404).json({ message: `ID ${id} não encontrado` });
       }
@@ -41,10 +58,12 @@ class Controller {
 
   // https://sequelize.org/docs/v6/core-concepts/model-querying-basics/#simple-update-queries
   async update(req, res) {
-    const { id } = req.params; // pega o id dos parametros
+    // dessa forma, pegando todos os parametros da url, independente da quantidade
+    const { ...params } = req.params; // pega o id dos parametros
     const updateData = req.body; //pegando os dados atualizado do body
+    const where = converteIds(params);
     try {
-      const isUpdate = await this.entidadeService.updateRegister(updateData, Number(id));
+      const isUpdate = await this.entidadeService.updateRegister(updateData, where);
       if (!isUpdate) {
         return res.status(404).json({ message: `ID ${id} não encontrado ou nenhum dado foi alterado` });
       }
@@ -54,10 +73,26 @@ class Controller {
     }
   }
 
+  // async remove(req, res) {
+  //   const { id } = req.params;
+  //   try {
+  //     const rowsDeleted = await this.entidadeService.removeRegister(Number(id));
+  //     if (!rowsDeleted) {
+  //       return res.status(404).json({ message: `ID ${id} não encontrado` });
+  //     }
+  //     return res.status(200).json({ message: `ID ${id} deletado com sucesso` });
+  //   } catch (error) {
+  //     return res.status(500).json({ message: error.message });
+  //   }
+  // }
+
   async remove(req, res) {
-    const { id } = req.params;
+    // dessa forma, pegando todos os parametros da url, independente da quantidade
+    const { ...params } = req.params; // pega o id dos parametros
+    const where = converteIds(params);
+
     try {
-      const rowsDeleted = await this.entidadeService.removeRegister(Number(id));
+      const rowsDeleted = await this.entidadeService.removeRegister(where);
       if (!rowsDeleted) {
         return res.status(404).json({ message: `ID ${id} não encontrado` });
       }
