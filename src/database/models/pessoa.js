@@ -1,6 +1,6 @@
 'use strict';
 
-const isCpfValido = requite('../../utils/validateCpfHelper')
+const isCpfValido = require('../../utils/validateCpfHelper.js');
 
 // MOdelo é a camada que faz a representação dos dados na API, assim mapeando os dados relacionais que estão na tabela "Pessoa" (neste caso)
 // Alem disso, a camada de modelo é responsavel por lidar com os dados, especificando como buscamos um dado, e todo o crud em geral, é resposabilidade em fazer a interface com a base de dados, além de ter as regras de negócio
@@ -18,10 +18,18 @@ module.exports = (sequelize, DataTypes) => {
       });
       Pessoa.hasMany(models.Matricula, {
         foreignKey: 'estudante_id',
-        // o scope é uma propriedade que nos permite fazer uma busca especifica, no caso, estamos buscando apenas os matriculados, sendo o 'status' uma propriedade de dentro da tabela 'matriculas', e o 'metriculado' o valor que queremos buscar
-        // scope: {status: 'metriculado'},
+        // o scope é uma propriedade que nos permite fazer uma busca especifica, no caso, estamos buscando apenas os matriculados, sendo o 'status' uma propriedade de dentro da tabela 'matriculas', e o 'matriculado' o valor que queremos buscar
+        scope: {status: 'matriculado'},
+        // scope: [{status: 'matriculado'}, {data_inicio: '...'}], // caso a gente queria mais parametros / restrições, basta colocar em um array
         // o as um chave que usamos para passar apelidos para dentro das nossas tabelas
         as: 'aulasMatriculadas'
+      })
+
+      // vamos criar uma nova associação entre 'pessoas' e 'matriculas'
+      Pessoa.hasMany(models.Matricula, {
+        foreignKey: 'estudante_id',
+        // tendo que criar um novo alias/apelido, pois o sequelize não permite que duas associações tenham o mesmo nome
+        as: 'allMatriculas'
       })
     }
   }
