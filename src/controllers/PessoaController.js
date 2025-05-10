@@ -21,8 +21,8 @@ class PessoaController extends Controller {
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
-  } 
-  
+  }
+
   async getAllMatriculas(req, res) {
     const { estudante_id } = req.params;
     try {
@@ -37,6 +37,16 @@ class PessoaController extends Controller {
     try {
       const allPeopleList = await pessoaServices.getAllPeopleByScope('allRegisters');
       return res.status(200).json(allPeopleList);
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
+  }
+
+  async cancelStudentRegister(req, res) {
+    const { estudante_id } = req.params
+    try {
+      await pessoaServices.cancelStudentRegisterAndMatriculas(Number(estudante_id))
+      return res.status(200).json({ mensagem: `matrículas ref. estudante de id ${estudante_id} canceladas` });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
