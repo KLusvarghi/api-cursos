@@ -36,11 +36,11 @@ class Services {
 
   // procura um registro com base no filtro e retorna a ele e a quantidade de registros encontrados
   async getAndCountRegisters(options) {
-    return dataSource[this.model].findAndCountAll({ 
+    return dataSource[this.model].findAndCountAll({
       // antes a gente passava apenas o where, mas para deixar mais generico, passamos o obj "where" e as option de "limit" e "order", e apenas passamos o "options" com o spread operator  
       // where: { ...where },
       ...options
-     })
+    })
   }
 
   async getRegister(where) {
@@ -53,9 +53,12 @@ class Services {
 
   // https://sequelize.org/docs/v6/core-concepts/model-querying-basics/#simple-update-queries
   // dentro dessa doc ele mostra os parametros que ele recebe e o que o metodo "update" retorne: https://sequelize.org/api/v6/class/src/model.js~model#static-method-update
-  async updateRegister(updateData, where) {
+  async updateRegister(updateData, where, transacao = {}) {
     // e o "update" ele recebe dois parametros, o primeiro é os dados que serão atualizados e o segundo é um objeto com as condições de atualização, neste caso, estamos verificando apenas o campo "id"
-    const resgisteList = dataSource[this.model].update(updateData, { where: { ...where } })
+    // sendo o "updateData" os dados a serem atualizados com chave e valor
+    const resgisteList = await dataSource[this.model].update(updateData, {
+      where: { ...where }, transaction: transacao
+    })
 
     // ao usar o "update" do sequelize, ele retorna um array com o primeiro elemento sendo o número de registros atualizados e o segundo elemento sendo os dados atualizados
     // então, se o primeiro elemento for 0, significa que nenhum registro foi atualizado
@@ -66,6 +69,7 @@ class Services {
     return true
   }
 
+ 
   // apenas com id
   // async removeRegister(id) {
   //   return dataSource[this.model].destroy({ where: { id: id } })
